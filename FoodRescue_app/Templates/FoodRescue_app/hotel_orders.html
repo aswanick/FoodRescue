@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Orders - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        /* Main page background */
+        body {
+            background: #031a14 !important;
+            color: #e4fff7;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #05251d, #008f72);
+            border-bottom: 1px solid #00e5bd;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: #e4fff7 !important;
+        }
+
+        /* Dashboard button */
+        .btn-light {
+            background: #00e5bd;
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            font-weight: 700;
+            border-radius: 8px;
+        }
+
+        .btn-light:hover {
+            background: #008f72;
+            color: #ffffff;
+        }
+
+        /* Page heading */
+        h2 {
+            color: #00e5bd;
+            font-weight: 700;
+        }
+
+        /* Orders table */
+        .table-responsive {
+            border: 1px solid #176b55;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 8px 22px rgba(0, 229, 189, 0.08);
+        }
+
+        .table {
+            margin-bottom: 0;
+            background: #05251d !important;
+            color: #e4fff7 !important;
+            border-color: #176b55 !important;
+            --bs-table-bg: #05251d;
+            --bs-table-color: #e4fff7;
+            --bs-table-border-color: #176b55;
+            --bs-table-hover-bg: #0b3a2e;
+            --bs-table-hover-color: #ffffff;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, #05251d, #008f72) !important;
+            color: #e4fff7 !important;
+            border-color: #176b55 !important;
+            padding: 15px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            background-color: #05251d !important;
+            color: #c2e4da !important;
+            border-color: #176b55 !important;
+            padding: 14px;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover td {
+            background-color: #0b3a2e !important;
+            color: #ffffff !important;
+        }
+
+        /* Status dropdown */
+        .form-select {
+            background-color: #082f25 !important;
+            color: #e4fff7 !important;
+            border: 1px solid #176b55;
+            border-radius: 7px;
+        }
+
+        .form-select:focus {
+            border-color: #00e5bd;
+            box-shadow: 0 0 0 0.2rem rgba(0, 229, 189, 0.2);
+        }
+
+        .form-select option {
+            background: #082f25;
+            color: #e4fff7;
+        }
+
+        /* Update button */
+        .btn-update {
+            background: linear-gradient(135deg, #008f72, #00e5bd);
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            border-radius: 7px;
+            padding: 7px 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-update:hover {
+            background: linear-gradient(135deg, #00e5bd, #008f72);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 229, 189, 0.25);
+        }
+
+        /* No orders message */
+        .alert-info {
+            background: #082f25 !important;
+            color: #b8fff0 !important;
+            border: 1px solid #008f72;
+            border-radius: 10px;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 576px) {
+            .container.py-5 {
+                padding-top: 25px !important;
+                padding-bottom: 25px !important;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark">
+
+    <div class="container">
+
+        <span class="navbar-brand fw-bold">
+             Food Rescue
+        </span>
+
+        <a href="{% url 'hotel_dashboard' %}"
+           class="btn btn-light">
+            Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- Main Content -->
+<div class="container py-5">
+
+    <h2 class="mb-4"> Customer Orders</h2>
+
+    {% if orders %}
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Customer</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for order in orders %}
+
+                <tr>
+
+                    <td>
+                        {{ order.food.name }}
+                    </td>
+
+                    <td>
+                        {{ order.customer_name }}
+                    </td>
+
+                    <td>
+                        {{ order.quantity }}
+                    </td>
+
+                    <td>
+                        ₹{{ order.total_price }}
+                    </td>
+
+                    <td>
+                        {{ order.order_date }}
+                    </td>
+
+                    <td>
+
+                        <form method="POST"
+                              action="{% url 'update_order_status' order.id %}">
+
+                            {% csrf_token %}
+
+                            <select name="status"
+                                    class="form-select form-select-sm mb-2">
+
+                                <option value="Pending"
+                                    {% if order.status == "Pending" %}selected{% endif %}>
+                                    Pending
+                                </option>
+
+                                <option value="Confirmed"
+                                    {% if order.status == "Confirmed" %}selected{% endif %}>
+                                    Confirmed
+                                </option>
+
+                                <option value="Ready"
+                                    {% if order.status == "Ready" %}selected{% endif %}>
+                                    Ready
+                                </option>
+
+                                <option value="Completed"
+                                    {% if order.status == "Completed" %}selected{% endif %}>
+                                    Completed
+                                </option>
+
+                            </select>
+
+                            <button type="submit"
+                                    class="btn btn-update">
+                                Update
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+         No customer orders available.
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

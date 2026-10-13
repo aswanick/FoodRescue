@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #020b08, #06271e, #001610);
+            color: #e5f5ef;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #063d2e, #08785a, #00a982);
+            border-bottom: 1px solid #16866a;
+            box-shadow: 0 4px 18px rgba(0, 255, 170, 0.08);
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-logout {
+            background: #071a15;
+            color: #bfffe9;
+            border: 1px solid #00c995;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #00c995;
+            color: #001b12;
+        }
+
+        /* Dashboard heading */
+        .dashboard-title {
+            color: #e5fff5;
+            font-weight: 700;
+        }
+
+        .text-muted {
+            color: #91b4a5 !important;
+        }
+
+        /* Dashboard cards */
+        .dashboard-card {
+            background: linear-gradient(145deg, #0a2119, #04150f);
+            border: 1px solid #174a37 !important;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            border-color: #00c995 !important;
+            box-shadow: 0 10px 28px rgba(0, 230, 160, 0.12);
+        }
+
+        .dashboard-card .card-body {
+            padding: 28px;
+        }
+
+        .card-title {
+            color: #c8f5e5;
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: #91b4a5;
+            line-height: 1.7;
+        }
+
+        /* Green action buttons */
+        .btn-green {
+            background: linear-gradient(135deg, #00c995, #008f68);
+            color: #001b12;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .btn-green:hover {
+            background: linear-gradient(135deg, #36f5bd, #00c995);
+            color: #001b12;
+            box-shadow: 0 0 16px rgba(0, 230, 160, 0.25);
+        }
+
+        .food-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-card .card-body {
+                padding: 22px;
+            }
+
+            .dashboard-title {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-decoration-none" href="#">
+             Food Rescue
+        </a>
+
+        <a href="{% url 'logout' %}" class="btn btn-logout">
+            Logout
+        </a>
+    </div>
+</nav>
+
+<!-- Dashboard -->
+<div class="container py-5">
+
+    <div class="mb-5">
+        <h2 class="dashboard-title">Customer Dashboard</h2>
+
+        <p class="text-muted mt-2">
+            Welcome! Find and order available surplus food.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Available Food -->
+        <div class="col-md-6">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="food-icon"></div>
+
+                    <h4 class="card-title">Available Food</h4>
+
+                    <p class="card-description">
+                        Browse surplus food available from hotels
+                        and restaurants.
+                    </p>
+
+                    <a href="{% url 'available_food' %}"
+                       class="btn btn-green">
+                        View Available Food →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- My Orders -->
+        <div class="col-md-6">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="food-icon"></div>
+
+                    <h4 class="card-title">My Orders</h4>
+
+                    <p class="card-description">
+                        View your orders and check their status.
+                    </p>
+
+                    <a href="{% url 'my_orders' %}"
+                       class="btn btn-green">
+                        View My Orders →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Food -->
+        <div class="col-md-6">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+
+                    <div class="food-icon"></div>
+
+                    <h4 class="card-title">Order Food</h4>
+
+                    <p class="card-description">
+                        Select available surplus food and place your order.
+                    </p>
+
+                    <a href="{% url 'available_food' %}"
+                       class="btn btn-green">
+                        Order Food →
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

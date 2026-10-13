@@ -1,0 +1,334 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #020b08, #06271e, #001610);
+            color: #e5f5ef;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #063d2e, #08785a, #00a982);
+            border-bottom: 1px solid #16866a;
+            box-shadow: 0 4px 18px rgba(0, 255, 170, 0.08);
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-dashboard {
+            background: #071a15;
+            color: #bfffe9;
+            border: 1px solid #00c995;
+            border-radius: 8px;
+            padding: 9px 18px;
+            transition: 0.3s ease;
+        }
+
+        .btn-dashboard:hover {
+            background: #00c995;
+            color: #001b12;
+        }
+
+        /* Page Heading */
+        .page-title {
+            color: #e5fff5;
+            font-weight: 700;
+        }
+
+        /* Order Cards */
+        .order-card {
+            background: linear-gradient(145deg, #0a2119, #04150f);
+            border: 1px solid #174a37 !important;
+            border-radius: 15px;
+            color: #e5f5ef;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            border-color: #00c995 !important;
+            box-shadow: 0 10px 28px rgba(0, 230, 160, 0.12);
+        }
+
+        .order-card .card-body {
+            padding: 25px;
+        }
+
+        .food-title {
+            color: #c8f5e5;
+            font-weight: 600;
+        }
+
+        .order-card hr {
+            border-color: #245744;
+            opacity: 1;
+        }
+
+        .order-card p {
+            color: #a9cabc;
+            margin-bottom: 13px;
+        }
+
+        .order-card strong {
+            color: #e5fff5;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .status-pending {
+            background: #463b12;
+            color: #ffe58a;
+            border-color: #806d24;
+        }
+
+        .status-confirmed {
+            background: #103e32;
+            color: #8fffd1;
+            border-color: #16866a;
+        }
+
+        .status-ready {
+            background: #103a47;
+            color: #91e8ff;
+            border-color: #23768b;
+        }
+
+        .status-accepted {
+            background: #183b2c;
+            color: #a6f7b9;
+            border-color: #338552;
+        }
+
+        .status-transit {
+            background: #123c48;
+            color: #8ee8ff;
+            border-color: #23768b;
+        }
+
+        .status-delivered,
+        .status-completed {
+            background: #124a37;
+            color: #7fffd4;
+            border-color: #16866a;
+        }
+
+        .status-default {
+            background: #24362e;
+            color: #c4d9cf;
+            border-color: #496257;
+        }
+
+        /* Empty State */
+        .empty-message {
+            background: #0a2119;
+            color: #bcebd9;
+            border: 1px solid #174a37;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        /* Buttons */
+        .btn-green {
+            background: linear-gradient(135deg, #00c995, #008f68);
+            color: #001b12;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .btn-green:hover {
+            background: linear-gradient(135deg, #36f5bd, #00c995);
+            color: #001b12;
+            box-shadow: 0 0 16px rgba(0, 230, 160, 0.25);
+        }
+
+        .container {
+            padding-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 25px;
+            }
+
+            .order-card .card-body {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark">
+    <div class="container py-0">
+
+        <span class="navbar-brand fw-bold">
+             Food Rescue
+        </span>
+
+        <a href="{% url 'customer_dashboard' %}"
+           class="btn btn-dashboard">
+            ← Dashboard
+        </a>
+
+    </div>
+</nav>
+
+<!-- My Orders -->
+<div class="container">
+
+    <h2 class="page-title mb-4">
+         My Orders
+    </h2>
+
+    {% if orders %}
+
+        <div class="row g-4">
+
+            {% for order in orders %}
+
+                <div class="col-md-6">
+
+                    <div class="card order-card h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="food-title">
+                                 {{ order.food.name }}
+                            </h4>
+
+                            <hr>
+
+                            <p>
+                                <strong>Customer:</strong>
+                                {{ order.customer_name }}
+                            </p>
+
+                            <p>
+                                <strong>Quantity:</strong>
+                                {{ order.quantity }}
+                            </p>
+
+                            <p>
+                                <strong>Total Price:</strong>
+                                ₹{{ order.total_price }}
+                            </p>
+
+                            <p>
+                                <strong>Order Date:</strong>
+                                {{ order.order_date }}
+                            </p>
+
+                            <p class="mb-0">
+                                <strong>Status:</strong>
+
+                                {% if order.status == "Pending" %}
+
+                                    <span class="status-badge status-pending">
+                                         Pending
+                                    </span>
+
+                                {% elif order.status == "Confirmed" %}
+
+                                    <span class="status-badge status-confirmed">
+                                        ✓ Confirmed
+                                    </span>
+
+                                {% elif order.status == "Ready" %}
+
+                                    <span class="status-badge status-ready">
+                                         Ready
+                                    </span>
+
+                                {% elif order.status == "Accepted" %}
+
+                                    <span class="status-badge status-accepted">
+                                         Delivery Accepted
+                                    </span>
+
+                                {% elif order.status == "Out for Delivery" %}
+
+                                    <span class="status-badge status-transit">
+                                         Out for Delivery
+                                    </span>
+
+                                {% elif order.status == "Delivered" %}
+
+                                    <span class="status-badge status-delivered">
+                                        ✅ Delivered
+                                    </span>
+
+                                {% elif order.status == "Completed" %}
+
+                                    <span class="status-badge status-completed">
+                                        ✓ Completed
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-default">
+                                        {{ order.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message mb-3">
+            <h5> No orders yet</h5>
+            <p class="mb-0">
+                You have not placed any orders yet.
+                Browse the available food and place your first order.
+            </p>
+        </div>
+
+        <a href="{% url 'hotel_food' %}"
+           class="btn btn-green">
+             Browse Food
+        </a>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

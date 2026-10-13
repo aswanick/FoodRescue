@@ -1,0 +1,254 @@
+[
+{
+  "model": "FoodRescue_app.register",
+  "pk": 4,
+  "fields": {
+    "name": "alicafe",
+    "email": "alicafe@gmail.com",
+    "phone": "345678977",
+    "username": "alicafe",
+    "password": "1234",
+    "role": "hotel"
+  }
+},
+{
+  "model": "FoodRescue_app.register",
+  "pk": 5,
+  "fields": {
+    "name": "anu cafe",
+    "email": "anucafe@gmail.com",
+    "phone": "3456789035",
+    "username": "anucafe",
+    "password": "1234",
+    "role": "hotel"
+  }
+},
+{
+  "model": "FoodRescue_app.register",
+  "pk": 6,
+  "fields": {
+    "name": "athul",
+    "email": "athu@gmail.com",
+    "phone": "3456789023",
+    "username": "athul",
+    "password": "1234",
+    "role": "customer"
+  }
+},
+{
+  "model": "FoodRescue_app.register",
+  "pk": 7,
+  "fields": {
+    "name": "arun",
+    "email": "arun@gmail.com",
+    "phone": "3456789023",
+    "username": "delivery",
+    "password": "1234",
+    "role": "delivery"
+  }
+},
+{
+  "model": "FoodRescue_app.register",
+  "pk": 8,
+  "fields": {
+    "name": "aswani",
+    "email": "aswan@gmail.com",
+    "phone": "3456789023",
+    "username": "aswani",
+    "password": "1234",
+    "role": "customer"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 3,
+  "fields": {
+    "hotel": 4,
+    "name": "biriyani",
+    "category": "Rice",
+    "quantity": 6,
+    "price": "100.00",
+    "available_time": "1 am",
+    "description": "good",
+    "image": "food_images/biriyani_AHOX8AH.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 4,
+  "fields": {
+    "hotel": 4,
+    "name": "cake",
+    "category": "Bakery",
+    "quantity": 5,
+    "price": "50.00",
+    "available_time": "12 am",
+    "description": "good",
+    "image": "food_images/cake.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 5,
+  "fields": {
+    "hotel": 4,
+    "name": "sandwitch",
+    "category": "Bakery",
+    "quantity": 5,
+    "price": "60.00",
+    "available_time": "9 pm",
+    "description": "yummy",
+    "image": "food_images/sandwitch.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 6,
+  "fields": {
+    "hotel": 5,
+    "name": "burger",
+    "category": "Bakery",
+    "quantity": 7,
+    "price": "50.00",
+    "available_time": "11 pm",
+    "description": "yummy",
+    "image": "food_images/burger.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 7,
+  "fields": {
+    "hotel": 5,
+    "name": "mandhi rice",
+    "category": "Rice",
+    "quantity": 2,
+    "price": "50.00",
+    "available_time": "1 am",
+    "description": "yummy",
+    "image": "food_images/rice.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 8,
+  "fields": {
+    "hotel": 5,
+    "name": "chikken curry",
+    "category": "Meals",
+    "quantity": 4,
+    "price": "80.00",
+    "available_time": "1 am",
+    "description": "yummy",
+    "image": "food_images/curry.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 9,
+  "fields": {
+    "hotel": 5,
+    "name": "loaded fries",
+    "category": "Meals",
+    "quantity": 2,
+    "price": "100.00",
+    "available_time": "12:30am",
+    "description": "yummy",
+    "image": "food_images/loaded_fries.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 10,
+  "fields": {
+    "hotel": 5,
+    "name": "pasta",
+    "category": "Meals",
+    "quantity": 0,
+    "price": "50.00",
+    "available_time": "11:30 pm",
+    "description": "yummy",
+    "image": "food_images/pasta.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 11,
+  "fields": {
+    "hotel": 4,
+    "name": "burger",
+    "category": "Bakery",
+    "quantity": 0,
+    "price": "50.00",
+    "available_time": "1 am",
+    "description": "yummy",
+    "image": "food_images/burger_hkrEqBK.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.food",
+  "pk": 12,
+  "fields": {
+    "hotel": 4,
+    "name": "puffs",
+    "category": "Bakery",
+    "quantity": 1,
+    "price": "25.00",
+    "available_time": "11 pm",
+    "description": "yummy",
+    "image": "food_images/puffs.jpg"
+  }
+},
+{
+  "model": "FoodRescue_app.order",
+  "pk": 33,
+  "fields": {
+    "food": 4,
+    "customer_name": "athul",
+    "quantity": 1,
+    "total_price": "50.00",
+    "order_date": "2026-10-11T07:28:12.611Z",
+    "status": "Completed",
+    "delivery_partner": 7
+  }
+},
+{
+  "model": "FoodRescue_app.order",
+  "pk": 35,
+  "fields": {
+    "food": 3,
+    "customer_name": "aswani",
+    "quantity": 1,
+    "total_price": "100.00",
+    "order_date": "2026-10-11T07:38:12.416Z",
+    "status": "Completed",
+    "delivery_partner": 7
+  }
+},
+{
+  "model": "FoodRescue_app.order",
+  "pk": 36,
+  "fields": {
+    "food": 9,
+    "customer_name": "athul",
+    "quantity": 2,
+    "total_price": "200.00",
+    "order_date": "2026-10-11T07:57:17.317Z",
+    "status": "Completed",
+    "delivery_partner": 7
+  }
+},
+{
+  "model": "FoodRescue_app.order",
+  "pk": 37,
+  "fields": {
+    "food": 10,
+    "customer_name": "athul",
+    "quantity": 1,
+    "total_price": "50.00",
+    "order_date": "2026-10-11T10:50:43.162Z",
+    "status": "Confirmed",
+    "delivery_partner": null
+  }
+}
+]

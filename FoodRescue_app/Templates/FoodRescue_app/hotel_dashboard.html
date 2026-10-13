@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hotel Dashboard - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        /* Main background */
+        body {
+            background: #031a14 !important;
+            color: #e4fff7;
+            min-height: 100vh;
+        }
+
+        /* Navigation bar */
+        .navbar {
+            background: linear-gradient(135deg, #05251d, #008f72);
+            border-bottom: 1px solid #00e5bd;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: #e4fff7 !important;
+            font-size: 1.4rem;
+        }
+
+        /* Logout button */
+        .btn-light {
+            background: #00e5bd;
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-light:hover {
+            background: #008f72;
+            color: #ffffff;
+            border-color: #008f72;
+        }
+
+        /* Dashboard headings */
+        h2 {
+            color: #00e5bd;
+            font-weight: 700;
+        }
+
+        h4 {
+            color: #00e5bd;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .text-muted {
+            color: #a7c9bf !important;
+        }
+
+        /* Dashboard cards */
+        .card {
+            background: #05251d !important;
+            color: #e4fff7;
+            border: 1px solid #176b55 !important;
+            border-radius: 14px;
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .card-body {
+            background: #05251d !important;
+            padding: 28px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0, 229, 189, 0.15);
+        }
+
+        .card-body p {
+            color: #c2e4da;
+            line-height: 1.6;
+        }
+
+        /* Dashboard action buttons */
+        .btn-action {
+            display: inline-block;
+            background: linear-gradient(135deg, #008f72, #00e5bd);
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: linear-gradient(135deg, #00e5bd, #008f72);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 229, 189, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive layout */
+        @media (max-width: 767px) {
+            .container.py-5 {
+                padding-top: 30px !important;
+                padding-bottom: 30px !important;
+            }
+
+            .card-body {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container">
+
+        <span class="navbar-brand fw-bold">
+             Food Rescue
+        </span>
+
+        <a href="{% url 'logout' %}" class="btn btn-light">
+            Logout
+        </a>
+
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <h2 class="mb-2">Hotel Dashboard</h2>
+
+    <p class="text-muted">
+        Manage your surplus food and customer orders.
+    </p>
+
+    <div class="row g-4 mt-3">
+
+        <!-- Add Food -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+
+                    <h4>➕ Add Food</h4>
+
+                    <p class="text-muted">
+                        Add surplus food available for customers.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'add_food' %}"
+                           class="btn-action">
+                            Add Food
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- View Food -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+
+                    <h4> My Food</h4>
+
+                    <p class="text-muted">
+                        View, edit and delete your food items.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'hotel_food' %}"
+                           class="btn-action">
+                            View My Food
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+
+                    <h4> Orders</h4>
+
+                    <p class="text-muted">
+                        View customer orders.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a href="{% url 'hotel_orders' %}"
+                           class="btn-action">
+                            View Customer Orders
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Dashboard - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #020b08, #06271e, #001610);
+            color: #e5f5ef;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #063d2e, #08785a, #00a982);
+            border-bottom: 1px solid #16866a;
+            box-shadow: 0 4px 18px rgba(0, 255, 170, 0.08);
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            background: #071a15;
+            color: #bfffe9;
+            border: 1px solid #00c995;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #00c995;
+            color: #001b12;
+        }
+
+        /* Headings */
+        .dashboard-title {
+            color: #e5fff5;
+            font-weight: 700;
+        }
+
+        .section-title {
+            color: #bfffe9;
+            font-weight: 600;
+            border-left: 4px solid #00c995;
+            padding-left: 12px;
+        }
+
+        /* Order Cards */
+        .order-card {
+            background: linear-gradient(145deg, #0a2119, #04150f);
+            border: 1px solid #174a37;
+            border-radius: 15px;
+            color: #e5f5ef;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            border-color: #00c995;
+            box-shadow: 0 10px 28px rgba(0, 230, 160, 0.12);
+        }
+
+        .order-card .card-body {
+            padding: 25px;
+        }
+
+        .food-title {
+            color: #c8f5e5;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .order-card p {
+            color: #a9cabc;
+            margin-bottom: 12px;
+        }
+
+        .order-card strong {
+            color: #e5fff5;
+        }
+
+        /* Action Buttons */
+        .btn-green {
+            background: linear-gradient(135deg, #00c995, #008f68);
+            color: #001b12;
+            border: none;
+            border-radius: 8px;
+            padding: 11px 15px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .btn-green:hover {
+            background: linear-gradient(135deg, #36f5bd, #00c995);
+            color: #001b12;
+            box-shadow: 0 0 16px rgba(0, 230, 160, 0.25);
+        }
+
+        .btn-green:disabled {
+            background: #174a37;
+            color: #bcebd9;
+            opacity: 0.85;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            background: #124a37;
+            color: #7fffd4;
+            border: 1px solid #16866a;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #463b12;
+            color: #ffe58a;
+            border: 1px solid #806d24;
+        }
+
+        /* Empty States */
+        .empty-message {
+            background: #0a2119;
+            color: #bcebd9;
+            border: 1px solid #174a37;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .text-muted {
+            color: #91b4a5 !important;
+        }
+
+        .dashboard-container {
+            padding-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-title {
+                font-size: 25px;
+            }
+
+            .order-card .card-body {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark">
+    <div class="container">
+
+        <span class="navbar-brand">
+             Food Rescue | Delivery Partner
+        </span>
+
+        <a href="{% url 'logout' %}"
+           class="btn btn-logout">
+            Logout
+        </a>
+
+    </div>
+</nav>
+
+<div class="container dashboard-container">
+
+    <!-- Welcome -->
+    <div class="mb-5">
+        <h2 class="dashboard-title">
+            Welcome, {{ delivery_partner.name }}
+        </h2>
+
+        <p class="text-muted mt-2">
+            Manage your deliveries and keep every order moving.
+        </p>
+    </div>
+
+
+    <!-- NEW ORDERS -->
+    <h4 class="section-title mt-4 mb-4">
+        New Delivery Orders
+    </h4>
+
+    {% if new_orders %}
+
+        <div class="row g-4">
+
+            {% for order in new_orders %}
+
+                <div class="col-md-6">
+
+                    <div class="card order-card h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="food-title">
+                                 {{ order.food.name }}
+                            </h5>
+
+                            <p>
+                                <strong>Customer:</strong>
+                                {{ order.customer_name }}
+                            </p>
+
+                            <p>
+                                <strong>Quantity:</strong>
+                                {{ order.quantity }}
+                            </p>
+
+                            <p>
+                                <strong>Total:</strong>
+                                ₹{{ order.total_price }}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+
+                                <span class="status-badge status-pending">
+                                    {{ order.status }}
+                                </span>
+                            </p>
+
+                            <a href="{% url 'accept_delivery' order.id %}"
+                               class="btn btn-green w-100 mt-2">
+                                 Accept Delivery
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message">
+            <strong> No new delivery orders.</strong>
+            <p class="mb-0 mt-2">
+                New orders will appear here when they are available.
+            </p>
+        </div>
+
+    {% endif %}
+
+
+    <!-- MY DELIVERIES -->
+    <h4 class="section-title mt-5 mb-4">
+         My Deliveries
+    </h4>
+
+    {% if my_orders %}
+
+        <div class="row g-4">
+
+            {% for order in my_orders %}
+
+                <div class="col-md-6">
+
+                    <div class="card order-card h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="food-title">
+                                 {{ order.food.name }}
+                            </h5>
+
+                            <p>
+                                <strong>Customer:</strong>
+                                {{ order.customer_name }}
+                            </p>
+
+                            <p>
+                                <strong>Quantity:</strong>
+                                {{ order.quantity }}
+                            </p>
+
+                            <p>
+                                <strong>Total:</strong>
+                                ₹{{ order.total_price }}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+
+                                {% if order.status == 'Accepted' %}
+
+                                    <span class="status-badge">
+                                        {{ order.status }}
+                                    </span>
+
+                                {% elif order.status == 'Delivered' %}
+
+                                    <span class="status-badge">
+                                        {{ order.status }}
+                                    </span>
+
+                                {% elif order.status == 'Completed' %}
+
+                                    <span class="status-badge">
+                                        {{ order.status }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-pending">
+                                        {{ order.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+
+                            <!-- ACCEPTED -->
+                            {% if order.status == 'Accepted' %}
+
+                                <a href="{% url 'mark_delivered' order.id %}"
+                                   class="btn btn-green w-100 mt-2">
+                                    ✅ Mark as Delivered
+                                </a>
+
+
+                            <!-- DELIVERED -->
+                            {% elif order.status == 'Delivered' %}
+
+                                <button class="btn btn-green w-100"
+                                        disabled>
+                                    ✓ Delivered
+                                </button>
+
+                                <a href="{% url 'complete_order' order.id %}"
+                                   class="btn btn-green w-100 mt-2">
+                                    ✅ Complete Order
+                                </a>
+
+
+                            <!-- COMPLETED -->
+                            {% elif order.status == 'Completed' %}
+
+                                <button class="btn btn-green w-100"
+                                        disabled>
+                                    ✓ Completed
+                                </button>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-message">
+            <strong> You have no assigned deliveries.</strong>
+            <p class="mb-0 mt-2">
+                Accept a new delivery order to see it here.
+            </p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

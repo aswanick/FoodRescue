@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Food - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        /* Main page background */
+        body {
+            background: #031a14 !important;
+            color: #e4fff7;
+            min-height: 100vh;
+        }
+
+        /* Navigation bar */
+        .navbar {
+            background: linear-gradient(135deg, #05251d, #008f72);
+            border-bottom: 1px solid #00e5bd;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: #e4fff7 !important;
+            font-weight: 700;
+        }
+
+        /* Dashboard button */
+        .btn-light {
+            background: #00e5bd;
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            font-weight: 700;
+            border-radius: 8px;
+        }
+
+        .btn-light:hover {
+            background: #008f72;
+            color: #ffffff;
+            border-color: #008f72;
+        }
+
+        /* Page heading */
+        h2, h4 {
+            color: #00e5bd;
+            font-weight: 700;
+        }
+
+        .text-muted {
+            color: #a7c9bf !important;
+        }
+
+        /* Food cards */
+        .food-card {
+            background: #05251d !important;
+            color: #e4fff7;
+            border: 1px solid #176b55 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0, 229, 189, 0.15);
+        }
+
+        .card-body {
+            background: #05251d !important;
+            padding: 22px;
+        }
+
+        .card-body p {
+            color: #c2e4da;
+            line-height: 1.6;
+        }
+
+        .card-body strong {
+            color: #00e5bd;
+        }
+
+        /* Food images */
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #176b55;
+        }
+
+        /* No image placeholder */
+        .text-center.p-5.bg-light {
+            background: #082f25 !important;
+            color: #a7c9bf !important;
+        }
+
+        /* Add, Edit and Delete buttons */
+        .gradient-btn {
+            background: linear-gradient(135deg, #008f72, #00e5bd);
+            border: 1px solid #00e5bd;
+            color: #031a14;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 10px 14px;
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #00e5bd, #008f72);
+            color: #ffffff;
+            border-color: #00e5bd;
+            box-shadow: 0 4px 15px rgba(0, 229, 189, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Out of stock */
+        .text-danger {
+            color: #ff8a8a !important;
+        }
+
+        /* No food message */
+        .alert-info {
+            background: #082f25 !important;
+            color: #b8fff0 !important;
+            border: 1px solid #008f72;
+            border-radius: 12px;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 576px) {
+            .container.py-5 {
+                padding-top: 25px !important;
+                padding-bottom: 25px !important;
+            }
+
+            .d-flex.justify-content-between.align-items-center.mb-4 {
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .gradient-btn {
+                font-size: 14px;
+            }
+
+            .card-body {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark">
+    <div class="container">
+
+        <span class="navbar-brand">
+             Food Rescue
+        </span>
+
+        <a href="{% url 'hotel_dashboard' %}"
+           class="btn btn-light">
+            Dashboard
+        </a>
+
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2> My Food</h2>
+
+            <p class="text-muted">
+                Manage the food items you have added.
+            </p>
+        </div>
+
+        <a href="{% url 'add_food' %}"
+           class="btn gradient-btn">
+            + Add Food
+        </a>
+
+    </div>
+
+    <!-- Food Cards -->
+    <div class="row g-4">
+
+        {% for food in foods %}
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100 food-card">
+
+                <!-- Image -->
+                {% if food.image %}
+
+                    <img src="{{ food.image.url }}"
+                         class="card-img-top"
+                         alt="{{ food.name }}">
+
+                {% else %}
+
+                    <div class="text-center p-5 bg-light">
+                        No Image
+                    </div>
+
+                {% endif %}
+
+                <!-- Food Details -->
+                <div class="card-body d-flex flex-column">
+
+                    <h4>{{ food.name }}</h4>
+
+                    <p class="text-muted mb-2">
+                        Category: {{ food.category }}
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Quantity:</strong>
+
+                        {% if food.quantity > 0 %}
+                            {{ food.quantity }}
+                        {% else %}
+                            <span class="text-danger fw-bold">
+                                Out of Stock
+                            </span>
+                        {% endif %}
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Price:</strong>
+                        ₹{{ food.price }}
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Available Time:</strong>
+                        {{ food.available_time }}
+                    </p>
+
+                    <p class="mb-3">
+                        {{ food.description }}
+                    </p>
+
+                    <!-- Edit and Delete Buttons -->
+                    <div class="d-flex gap-2 mt-auto">
+
+                        <a href="{% url 'edit_food' food.id %}"
+                           class="btn gradient-btn w-50">
+                            ✏️ Edit
+                        </a>
+
+                        <a href="{% url 'delete_food' food.id %}"
+                           class="btn gradient-btn w-50"
+                           onclick="return confirm('Are you sure you want to delete this food?');">
+                            🗑️ Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <!-- No Food -->
+        <div class="col-12">
+
+            <div class="alert alert-info text-center">
+
+                You have not added any food yet.
+
+                <br><br>
+
+                <a href="{% url 'add_food' %}"
+                   class="btn gradient-btn">
+                    Add Food
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

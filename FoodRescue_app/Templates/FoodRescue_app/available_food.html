@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Available Food - Food Rescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        /* Main page background */
+        body {
+            background: #031a14 !important;
+            color: #e4fff7;
+            min-height: 100vh;
+        }
+
+        /* Navigation bar */
+        .navbar {
+            background: linear-gradient(135deg, #05251d, #008f72);
+            border-bottom: 1px solid #00e5bd;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: #e4fff7 !important;
+        }
+
+        /* Home and Dashboard buttons */
+        .btn-light {
+            background: #00e5bd;
+            color: #031a14;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-light:hover {
+            background: #008f72;
+            color: #ffffff;
+        }
+
+        /* Headings */
+        h2, h4 {
+            color: #00e5bd;
+        }
+
+        .text-muted {
+            color: #a7c9bf !important;
+        }
+
+        /* Search input and category dropdown */
+        .form-control,
+        .form-select {
+            background-color: #082f25 !important;
+            color: #e4fff7 !important;
+            border: 1px solid #176b55;
+            border-radius: 8px;
+        }
+
+        .form-control::placeholder {
+            color: #a7c9bf;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #082f25 !important;
+            color: #e4fff7 !important;
+            border-color: #00e5bd;
+            box-shadow: 0 0 0 0.2rem rgba(0, 229, 189, 0.2);
+        }
+
+        .form-select option {
+            background: #082f25;
+            color: #e4fff7;
+        }
+
+        /* Food cards */
+        .card {
+            background: #05251d !important;
+            color: #e4fff7;
+            border: 1px solid #176b55 !important;
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0, 229, 189, 0.15);
+        }
+
+        .card-body {
+            background: #05251d !important;
+        }
+
+        .card-body p {
+            color: #c2e4da;
+        }
+
+        .card-body strong {
+            color: #00e5bd;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #176b55;
+        }
+
+        /* No image placeholder */
+        .text-center.p-5.bg-light {
+            background: #082f25 !important;
+            color: #a7c9bf !important;
+        }
+
+        /* Order Food button */
+        .btn-order,
+        .btn.w-100:not(.btn-secondary) {
+            background: linear-gradient(135deg, #008f72, #00e5bd);
+            color: #031a14;
+            border: 1px solid #00e5bd;
+            font-weight: 700;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-order:hover,
+        .btn.w-100:not(.btn-secondary):hover {
+            background: linear-gradient(135deg, #00e5bd, #008f72);
+            color: #ffffff;
+            border-color: #00e5bd;
+            box-shadow: 0 4px 15px rgba(0, 229, 189, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Out of stock button */
+        .btn-secondary {
+            background: #344e46 !important;
+            color: #d1e5de !important;
+            border: 1px solid #49685e !important;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            opacity: 0.8;
+        }
+
+        .btn-secondary:hover {
+            background: #344e46 !important;
+            transform: none;
+        }
+
+        /* Out of stock text */
+        .text-danger {
+            color: #ff8a8a !important;
+        }
+
+        /* Information messages */
+        .alert-info {
+            background: #082f25 !important;
+            color: #b8fff0 !important;
+            border: 1px solid #008f72;
+            border-radius: 12px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 576px) {
+            .container.py-5 {
+                padding-top: 25px !important;
+                padding-bottom: 25px !important;
+            }
+
+            .d-flex.justify-content-between.align-items-center.gap-3 {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            #foodSearch,
+            #categoryFilter {
+                width: 100% !important;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container">
+
+        <span class="navbar-brand fw-bold">
+            Food Rescue
+        </span>
+
+        {% if request.session.username %}
+        <a href="{% url 'customer_dashboard' %}"
+           class="btn btn-light">
+            Dashboard
+        </a>
+        {% else %}
+        <a href="{% url 'home' %}"
+           class="btn btn-light">
+            Home
+        </a>
+        {% endif %}
+
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h2> Available Food</h2>
+
+        <p class="text-muted">
+            Choose surplus food and place your order.
+        </p>
+    </div>
+
+    <!-- Search and category filter -->
+    <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+
+        <input type="text"
+               id="foodSearch"
+               class="form-control"
+               style="width: 65%;"
+               placeholder="🔍 Search food by name">
+
+        <select id="categoryFilter"
+                class="form-select"
+                style="width: 35%;">
+            <option value="">All Categories</option>
+        </select>
+
+    </div>
+
+    <!-- Food cards -->
+    <div class="row g-4" id="foodRow">
+
+        {% for food in foods %}
+
+        <div class="col-md-4 food-item"
+             data-food-name="{{ food.name|lower }}"
+             data-category="{{ food.category|lower }}">
+
+            <div class="card shadow-sm h-100">
+
+                {% if food.image %}
+
+                <img src="{{ food.image.url }}"
+                     class="card-img-top"
+                     alt="{{ food.name }}">
+
+                {% else %}
+
+                <div class="text-center p-5 bg-light">
+                    No Image
+                </div>
+
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+
+                    <h4>{{ food.name }}</h4>
+
+                    <p class="text-muted mb-2">
+                        Category: {{ food.category }}
+                    </p>
+
+                    <p>
+                        <strong>Available Quantity:</strong>
+
+                        {% if food.quantity > 0 %}
+                            {{ food.quantity }}
+                        {% else %}
+                            <span class="text-danger fw-bold">
+                                Out of Stock
+                            </span>
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Price:</strong>
+                        ₹{{ food.price }}
+                    </p>
+
+                    <p>
+                        <strong>Available Time:</strong>
+                        {{ food.available_time }}
+                    </p>
+
+                    <p>
+                        {{ food.description }}
+                    </p>
+
+                    <div class="mt-auto">
+
+                        {% if food.quantity > 0 %}
+
+                        <a href="{% url 'place_order' food.id %}"
+                           class="btn btn-order w-100">
+                            🛒 Order Food
+                        </a>
+
+                        {% else %}
+
+                        <button class="btn btn-secondary w-100"
+                                disabled>
+                            Out of Stock
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No food is currently available.
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("foodSearch");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const foodItems = document.querySelectorAll(".food-item");
+    const foodRow = document.getElementById("foodRow");
+
+    // Message displayed when no matching food is found
+    const noResults = document.createElement("div");
+    noResults.className = "col-12";
+
+    noResults.innerHTML = `
+        <div class="alert alert-info text-center">
+            No matching food found.
+        </div>
+    `;
+
+    noResults.style.display = "none";
+    foodRow.appendChild(noResults);
+
+    // Create category options
+    const categories = new Set();
+
+    foodItems.forEach(function (item) {
+        const category = item.dataset.category;
+
+        if (category) {
+            categories.add(category);
+        }
+    });
+
+    [...categories].sort().forEach(function (category) {
+
+        const option = document.createElement("option");
+
+        option.value = category;
+        option.textContent =
+            category.charAt(0).toUpperCase() + category.slice(1);
+
+        categoryFilter.appendChild(option);
+    });
+
+    // Search and filter food cards
+    function filterFood() {
+
+        const searchText = searchInput.value.toLowerCase().trim();
+        const selectedCategory = categoryFilter.value;
+
+        let visibleCount = 0;
+
+        foodItems.forEach(function (item) {
+
+            const name = item.dataset.foodName;
+            const category = item.dataset.category;
+
+            const matchesName = name.includes(searchText);
+
+            const matchesCategory =
+                !selectedCategory || category === selectedCategory;
+
+            if (matchesName && matchesCategory) {
+
+                item.style.display = "";
+                visibleCount++;
+
+            } else {
+
+                item.style.display = "none";
+            }
+        });
+
+        noResults.style.display =
+            foodItems.length > 0 && visibleCount === 0
+                ? "block"
+                : "none";
+    }
+
+    searchInput.addEventListener("input", filterFood);
+    categoryFilter.addEventListener("change", filterFood);
+
+});
+</script>
+
+</body>
+</html>
